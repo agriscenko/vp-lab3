@@ -1,1 +1,1 @@
-### Otrais laboratorijas darbs priekšmetā "Vizuālā programmēšana (studiju projekts)"
+### Trešais laboratorijas darbs priekšmetā "Vizuālā programmēšana (studiju projekts)"
