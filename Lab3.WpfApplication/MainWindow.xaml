@@ -1,0 +1,58 @@
+﻿<Window x:Class="Lab3.WpfApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lab3.WpfApplication"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:viewModels="clr-namespace:Lab3.WpfApplication.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <viewModels:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
+            <DataGrid AutoGenerateColumns="False" Grid.Row="1" Grid.ColumnSpan="4"
+                      x:Name="LstDepartments"
+                      d:ItemsSource="{d:SampleData ItemCount=5}"
+                      ItemsSource="{Binding Departments, Mode=OneWay}"
+                      SelectionMode="Single"
+                      CanUserAddRows="False"
+                      IsReadOnly="True"
+                      SelectedItem="{Binding SelectedDepartment, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}" />
+                    <DataGridTextColumn Header="Nosaukums" Width="150" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Stāvs" Width="50" Binding="{Binding FloorNumber}" />
+                    <DataGridTextColumn Header="Tālruņa Nr." Width="100" Binding="{Binding PhoneNumber}" />
+                    <DataGridTextColumn Header="E-pasts" Width="150" Binding="{Binding Email}" />
+                    <DataGridTextColumn Header="Reitings" Width="60" Binding="{Binding Rating}" />
+                    <DataGridCheckBoxColumn Header="Statuss" Width="50" Binding="{Binding IsActive}" />
+                </DataGrid.Columns>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectDepartmentCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </DataGrid>
+            <Label>Darbinieki:</Label>
+            <DataGrid AutoGenerateColumns="False" Grid.Row="1" Grid.ColumnSpan="4"
+                      x:Name="LstEmployees"
+                      d:ItemsSource="{d:SampleData ItemCount=5}"
+                      ItemsSource="{Binding Employees, Mode=OneWay}"
+                      SelectionMode="Single"
+                      CanUserAddRows="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}" />
+                    <DataGridTextColumn Header="Vārds" Width="150" Binding="{Binding FirstName}" />
+                    <DataGridTextColumn Header="Uzvārds" Width="150" Binding="{Binding LastName}" />
+                    <DataGridTextColumn Header="Amats" Width="150" Binding="{Binding Position}" />
+                    <DataGridTextColumn Header="Alga" Width="60" Binding="{Binding Salary}" />
+                    <DataGridCheckBoxColumn Header="Statuss" Width="50" Binding="{Binding IsActive}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </Grid>
+</Window>
