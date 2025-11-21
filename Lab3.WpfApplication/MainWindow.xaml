@@ -13,6 +13,31 @@
     </Window.DataContext>
     <Grid>
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0 10" >
+                <Label VerticalAlignment="Center">Nosaukums</Label>
+                <TextBox x:Name="TbxSearchName"
+                        Width="200"
+                        Text="{Binding SearchDepartmentName}"
+                        Margin="0 0 10 0" />
+                <Label VerticalAlignment="Center">Stāvs</Label>
+                <ComboBox x:Name="CbxFloor"
+                          Width="50"
+                          ItemsSource="{Binding DepartmentFloors}"
+                          SelectedItem="{Binding SelectedDepartmentFloor, Mode=TwoWay}"
+                          Margin="0 0 10 0"/>
+                <CheckBox x:Name="ChkShowInactive"
+                    VerticalAlignment="Center"
+                          IsChecked="{Binding ShowInactiveDepartments, Mode=TwoWay}"
+                          Content="Radīt neaktīvas nodaļas"
+                          Margin="0 0 10 0"/>
+                <Button x:Name="BtnSearch"
+                        Command="{Binding SearchCommand}"
+                        Margin="0 0 10 0"
+                        Padding="10 0">Meklēt</Button>
+                <Button x:Name="BtnResetFilter"
+                        Command="{Binding ResetFiltersCommand}"
+                        Padding="10 0">Atiestatīt filtru</Button>
+            </StackPanel>
             <DataGrid AutoGenerateColumns="False" Grid.Row="1" Grid.ColumnSpan="4"
                       x:Name="LstDepartments"
                       d:ItemsSource="{d:SampleData ItemCount=5}"
