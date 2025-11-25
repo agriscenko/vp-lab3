@@ -8,29 +8,32 @@
         xmlns:converters="clr-namespace:Lab3.WpfApplication.Converters"
         xmlns:viewModels="clr-namespace:Lab3.WpfApplication.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="842">
     <Window.Resources>
-        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+        <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Window.Resources>
     <Window.DataContext>
         <viewModels:MainWindowViewModel />
     </Window.DataContext>
-    <Grid>
+    <Grid Margin="10">
         <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0 10" >
-                <Label VerticalAlignment="Center">Nosaukums</Label>
-                <TextBox x:Name="TbxSearchName"
-                        Width="200"
-                        Text="{Binding SearchDepartmentName}"
-                        Margin="0 0 10 0" />
-                <Label VerticalAlignment="Center">Stāvs</Label>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0 0 0 10">
+                <Label>Filtrs:</Label>
+                <Label>Nosaukums</Label>
+                <TextBox x:Name="TbxSearchName" MaxLength="50"
+                         VerticalAlignment="Center" 
+                         Width="200"
+                         Text="{Binding SearchDepartmentName}"
+                         Margin="0 0 10 0"
+                         Padding="2 4" />
+                <Label>Stāvs</Label>
                 <ComboBox x:Name="CbxFloor"
                           Width="50"
                           ItemsSource="{Binding DepartmentFloors}"
                           SelectedItem="{Binding SelectedDepartmentFloor, Mode=TwoWay}"
                           Margin="0 0 10 0"/>
-                <Label VerticalAlignment="Center">Ir vakances</Label>
-                <StackPanel Orientation="Horizontal" DataContext="{Binding}" Margin="0 0 10 0" VerticalAlignment="Center">
+                <Label>Ir vakances</Label>
+                <StackPanel Orientation="Horizontal" DataContext="{Binding}" Height="26" Margin="0 0 10 0">
                     <RadioButton Content="Jebkurš"
                                  IsChecked="{Binding HiringStatus, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Any}"
                                  VerticalAlignment="Center"
@@ -41,14 +44,16 @@
                                  Margin="0 0 5 0" />
                     <RadioButton Content="Nav"
                                  IsChecked="{Binding HiringStatus, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=No}"
-                                 VerticalAlignment="Center"/>
+                                 VerticalAlignment="Center" />
                 </StackPanel>
                 <Button x:Name="BtnSearch"
                         Command="{Binding SearchCommand}"
                         Margin="0 0 10 0"
                         Padding="10 0">Meklēt</Button>
+                <Border Width="1" Background="Gray" Margin="0 0 10 0" />
                 <Button x:Name="BtnResetFilter"
                         Command="{Binding ResetFiltersCommand}"
+                        Margin="0 0 10 0"
                         Padding="10 0">Atiestatīt filtru</Button>
             </StackPanel>
             <DataGrid AutoGenerateColumns="False" Grid.Row="1" Grid.ColumnSpan="4"
@@ -67,7 +72,7 @@
                     <DataGridTextColumn Header="Tālruņa Nr." Width="100" Binding="{Binding PhoneNumber}" />
                     <DataGridTextColumn Header="E-pasts" Width="150" Binding="{Binding Email}" />
                     <DataGridCheckBoxColumn Header="Ir vakances" Width="70" Binding="{Binding IsHiring}" />
-                    <DataGridTextColumn Header="Pēdējais audits" Width="120" Binding="{Binding LastAuditDateTime}" />
+                    <DataGridTextColumn Header="Pēdējais audits" Width="130" Binding="{Binding LastAuditDateTime}" />
                     <DataGridTextColumn Header="Apraksts" Width="250" Binding="{Binding Description}" />
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
@@ -76,27 +81,40 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DataGrid>
-            <Label>Darbinieki:</Label>
-            <DataGrid AutoGenerateColumns="False" Grid.Row="1" Grid.ColumnSpan="4"
+            <StackPanel Orientation="Horizontal" Height="26" Margin="0 5 0 5">
+                <Label>Darbības:</Label>
+                <Button x:Name="BtnDelete"
+                        Command="{Binding DeleteDepartmentCommand}"
+                        Margin="10 0 10 0"
+                        Padding="10 0">Dzēst</Button>
+                <Button x:Name="BtnUpdate"
+                        Command="{Binding UpdateDepartmentCommand}"
+                        Margin="0 0 10 0"
+                        Padding="10 0">Labot</Button>
+            </StackPanel>
+            <StackPanel>
+                <Label>Darbinieki:</Label>
+                <DataGrid AutoGenerateColumns="False" Grid.Row="1" Grid.ColumnSpan="4"
                       x:Name="LstEmployees"
                       d:ItemsSource="{d:SampleData ItemCount=5}"
                       ItemsSource="{Binding Employees, Mode=OneWay}"
                       SelectionMode="Single"
                       CanUserAddRows="False"
                       IsReadOnly="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}" />
-                    <DataGridTextColumn Header="Vārds" Width="100" Binding="{Binding FirstName}" />
-                    <DataGridTextColumn Header="Uzvārds" Width="100" Binding="{Binding LastName}" />
-                    <DataGridTextColumn Header="Dzimšanas datums" Width="120" Binding="{Binding DateOfBirth}" />
-                    <DataGridTextColumn Header="Tālruņa Nr." Width="100" Binding="{Binding PhoneNumber}" />
-                    <DataGridTextColumn Header="E-pasts" Width="180" Binding="{Binding Email}" />
-                    <DataGridTextColumn Header="Amats" Width="180" Binding="{Binding Position}" />
-                    <DataGridTextColumn Header="Pieņemts darbā" Width="100" Binding="{Binding HireDate}" />
-                    <DataGridTextColumn Header="Veiktspēja" Width="70" Binding="{Binding PerformanceScore}" />
-                    <DataGridCheckBoxColumn Header="Atvaļinājumā" Width="80" Binding="{Binding IsOnLeave}" />
-                </DataGrid.Columns>
-            </DataGrid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}" />
+                        <DataGridTextColumn Header="Vārds" Width="100" Binding="{Binding FirstName}" />
+                        <DataGridTextColumn Header="Uzvārds" Width="100" Binding="{Binding LastName}" />
+                        <DataGridTextColumn Header="Dzimšanas datums" Width="120" Binding="{Binding DateOfBirth}" />
+                        <DataGridTextColumn Header="Tālruņa Nr." Width="100" Binding="{Binding PhoneNumber}" />
+                        <DataGridTextColumn Header="E-pasts" Width="180" Binding="{Binding Email}" />
+                        <DataGridTextColumn Header="Amats" Width="180" Binding="{Binding Position}" />
+                        <DataGridTextColumn Header="Pieņemts darbā" Width="100" Binding="{Binding HireDate}" />
+                        <DataGridTextColumn Header="Veiktspēja" Width="70" Binding="{Binding PerformanceScore}" />
+                        <DataGridCheckBoxColumn Header="Atvaļinājumā" Width="80" Binding="{Binding IsOnLeave}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

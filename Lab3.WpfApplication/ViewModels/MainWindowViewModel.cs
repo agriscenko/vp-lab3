@@ -18,6 +18,8 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
         SelectDepartmentCommand = new RelayCommand(LoadEmployees);
         SearchCommand = new RelayCommand(FilterData);
         ResetFiltersCommand = new RelayCommand(ResetFilters);
+        DeleteDepartmentCommand = new RelayCommand(DeleteSelectedDepartment);
+        UpdateDepartmentCommand = new RelayCommand(OpenUpdateDepartmentWindow);
     }
 
     private Department[] _departments;
@@ -50,7 +52,7 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
         }
     }
 
-    public Department SelectedDepartment { get; set; }
+    public Department? SelectedDepartment { get; set; }
 
     public void LoadEmployees()
     {
@@ -165,11 +167,48 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
         FilterData();
     }
 
+    private void DeleteSelectedDepartment()
+    {
+        if (SelectedDepartment == null)
+            return;
+
+        var department = _db.Departments.FirstOrDefault(d => d.Id == SelectedDepartment.Id);
+
+        if (department != null)
+        {
+            _db.Departments.Remove(department);
+            _db.SaveChanges();
+
+            Departments = _db.Departments.ToArray();
+        }
+    }
+
+    private void OpenUpdateDepartmentWindow()
+    {
+        if (SelectedDepartment == null)
+            return;
+
+        var updateWindow = new UpdateDepartmentWindow(SelectedDepartment);
+
+        bool? result = updateWindow.ShowDialog();
+
+        if (result == true)
+        {
+            _db.SaveChanges();
+
+            Departments = _db.Departments.ToArray();
+        }
+    }
+
     public ICommand SelectDepartmentCommand { get; }
 
     public ICommand SearchCommand { get; }
 
     public ICommand ResetFiltersCommand { get; }
+
+    public ICommand DeleteDepartmentCommand { get; }
+
+    public ICommand UpdateDepartmentCommand { get; }
 
     public event PropertyChangedEventHandler PropertyChanged;
 

@@ -19,9 +19,9 @@ internal class Program
         Linq5(db);
         Linq6(db);
         Linq7(db);
-    //    Linq8(db);
+        Linq8(db);
 
-    //    ReseedIds(db);
+        ReseedIds(db);
     }
 
     [Description("Izvadīt nodaļu skaitu pirmajā stāvā.")]
@@ -74,8 +74,8 @@ internal class Program
                 Name = "Personāla nodaļa",
                 Code = "HR",
                 FloorNumber = 1,
-                Email = "hr@example.com",
                 PhoneNumber = "+371 67123001",
+                Email = "hr@example.com",
                 Employees = new List<Employee>
                 {
                     new Employee {
@@ -98,6 +98,7 @@ internal class Program
                         Position = "Personāla speciālists",
                         Salary = 1800,
                         HireDate = new DateOnly(2022, 6, 9),
+                        IsOnLeave = true,
                         Department = null
                     },
                     new Employee {
@@ -118,8 +119,9 @@ internal class Program
                 Name = "Pārdošanas nodaļa",
                 Code = "SL",
                 FloorNumber = 1,
-                Email = "sales@example.com",
                 PhoneNumber = "+371 67123002",
+                Email = "sales@example.com",
+                IsHiring = true,
                 Employees = new List<Employee>
                 {
                     new Employee {
@@ -142,6 +144,7 @@ internal class Program
                         Position = "Pārdošanas speciāliste",
                         Salary = 1700,
                         HireDate = new DateOnly(2020, 2, 20),
+                        IsOnLeave = true,
                         Department = null
                     },
                     new Employee {
@@ -175,6 +178,7 @@ internal class Program
                         Position = "Tirdzniecības speciālists",
                         Salary = 1800,
                         HireDate = new DateOnly(2023, 3, 10),
+                        IsOnLeave = true,
                         Department = null
                     }
                 }
@@ -184,8 +188,8 @@ internal class Program
                 Name = "Mārketinga nodaļa",
                 Code = "MK",
                 FloorNumber = 1,
-                Email = "marketing@example.com",
                 PhoneNumber = "+371 67123003",
+                Email = "marketing@example.com",
                 Employees = new List<Employee>
                 {
                     new Employee {
@@ -219,6 +223,7 @@ internal class Program
                         Position = "Reklāmas speciāliste",
                         Salary = 1800,
                         HireDate = new DateOnly(2020, 11, 10),
+                        IsOnLeave = true,
                         Department = null
                     },
                     new Employee {
@@ -250,8 +255,8 @@ internal class Program
                 Name = "Grāmatvedības nodaļa",
                 Code = "AC",
                 FloorNumber = 2,
-                Email = "accounting@example.com",
                 PhoneNumber = "+371 67123004",
+                Email = "accounting@example.com",
                 Employees = new List<Employee>
                 {
                     new Employee {
@@ -296,6 +301,7 @@ internal class Program
                         Position = "Grāmatvedības speciāliste",
                         Salary = 1900,
                         HireDate = new DateOnly(2021, 1, 12),
+                        IsOnLeave = true,
                         Department = null
                     },
                     new Employee {
@@ -316,8 +322,8 @@ internal class Program
                 Name = "Klientu atbalsta nodaļa",
                 Code = "CS",
                 FloorNumber = 2,
-                Email = "support@example.com",
                 PhoneNumber = "+371 67123005",
+                Email = "support@example.com",
                 Employees = new List<Employee>
                 {
                     new Employee {
@@ -362,6 +368,7 @@ internal class Program
                         Position = "Klientu atbalsta speciālists",
                         Salary = 1650,
                         HireDate = new DateOnly(2022, 8, 3),
+                        IsOnLeave = true,
                         Department = null
                     },
                     new Employee {
@@ -382,8 +389,9 @@ internal class Program
                 Name = "IT nodaļa",
                 Code = "IT",
                 FloorNumber = 3,
-                Email = "it@example.com",
                 PhoneNumber = "+371 67123006",
+                Email = "it@example.com",
+                IsHiring = true,
                 Description = "Emails get lost. Tickets get answered. :)",
                 Employees = new List<Employee>
                 {
@@ -418,6 +426,7 @@ internal class Program
                         Position = "Programmētājs",
                         Salary = 2800,
                         HireDate = new DateOnly(2024, 12, 18),
+                        IsOnLeave = true,
                         Department = null
                     }
                 }
