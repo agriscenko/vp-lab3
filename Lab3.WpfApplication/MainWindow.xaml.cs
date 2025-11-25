@@ -22,6 +22,6 @@ public partial class MainWindow : Window
 
         _viewModel.Load();
 
-        this.DataContext = _viewModel;
+        DataContext = _viewModel;
     }
 }

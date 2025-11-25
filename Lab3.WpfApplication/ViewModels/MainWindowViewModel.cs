@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Lab2.DataAccess;
+using Lab2.DataAccess.Interfaces;
+using Lab2.DataAccess.Services;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -9,11 +11,11 @@ namespace Lab3.WpfApplication.ViewModels;
 
 class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
 {
-    private DepartmentDbContext _db;
+    private readonly DepartmentRepositoryService _repo;
 
     public MainWindowViewModel()
     {
-        _db = new DepartmentDbContext();
+        _repo = new DepartmentRepositoryService(new DepartmentDbContext());
 
         SelectDepartmentCommand = new RelayCommand(LoadEmployees);
         SearchCommand = new RelayCommand(FilterData);
@@ -36,7 +38,7 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
 
     public void Load()
     {
-        _departments = _db.Departments.ToArray();
+        _departments = _repo.GetAll().ToArray();
         LoadDepartmentFloors();
     }
 
@@ -62,7 +64,7 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
             return;
         }
 
-        Employees = _db.Employees.Where(e => e.Department.Id == SelectedDepartment.Id).ToList();
+        Employees = _repo.GetEmployees(SelectedDepartment.Id).ToList();
     }
 
     private List<int> _departmentFloors;
@@ -91,7 +93,7 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
 
     private void LoadDepartmentFloors()
     {
-        DepartmentFloors = _db.Departments
+        DepartmentFloors = _repo.GetAll()
             .Select(d => d.FloorNumber)
             .Distinct()
             .OrderBy(f => f)
@@ -127,11 +129,11 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
 
     public void FilterData()
     {
-        var query = _db.Departments.AsQueryable();
+        var query = _repo.GetAll().AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(SearchDepartmentName))
         {
-            query = query.Where(d => d.Name.Contains(SearchDepartmentName));
+            query = query.Where(d => d.Name.Contains(SearchDepartmentName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         if (SelectedDepartmentFloor.HasValue)
@@ -172,14 +174,13 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
         if (SelectedDepartment == null)
             return;
 
-        var department = _db.Departments.FirstOrDefault(d => d.Id == SelectedDepartment.Id);
+        var department = _repo.GetById(SelectedDepartment.Id);
 
         if (department != null)
         {
-            _db.Departments.Remove(department);
-            _db.SaveChanges();
+            _repo.Delete(department.Id);
 
-            Departments = _db.Departments.ToArray();
+            Departments = _repo.GetAll().ToArray();
         }
     }
 
@@ -194,9 +195,9 @@ class MainWindowViewModel : ObservableObject, INotifyPropertyChanged
 
         if (result == true)
         {
-            _db.SaveChanges();
+            _repo.Update(SelectedDepartment);
 
-            Departments = _db.Departments.ToArray();
+            Departments = _repo.GetAll().ToArray();
         }
     }
 
